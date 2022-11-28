@@ -24,7 +24,7 @@ installFirefox() {
 
 	if [[ -e $DOWNLOAD_FOLDER/$DOWNLOAD_FILE ]]; then
 		echo "[Installation] Decompressing Firefox from bzip2 file"
-		tar xjf $DOWNLOAD_FOLDER/$DOWNLOAD_FILE
+		tar xjf $DOWNLOAD_FOLDER/$DOWNLOAD_FILE --directory $DOWNLOAD_FOLDER
 
 		echo "[Installation] Moving Firefox folder to /opt"
 		sudo mv $DOWNLOAD_FOLDER/firefox /opt
