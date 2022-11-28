@@ -73,7 +73,7 @@ snap list firefox
 if [[ $? -eq 0 ]]; then
 	echo "[Checking snap] Snap package found. Initiating script"
 	scriptInit
-elif [[ $1 -eq "force" ]]; then
+elif [[ $1 == "force" ]]; then
 	installFirefox
 else
 	echo "[Checking snap] Firefox seems to be running outside of snap scope. Exiting"
