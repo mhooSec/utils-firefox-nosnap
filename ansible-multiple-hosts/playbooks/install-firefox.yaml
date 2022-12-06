@@ -1,0 +1,61 @@
+---
+- hosts: all
+
+  vars:
+    application_name: firefox
+    application_binary_name: firefox
+    download_url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
+    download_config: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
+    installation_folder: /opt
+    local_binary_folder: /usr/local/bin
+    applications_folder: /usr/share/applications
+
+  gather_facts: yes
+  become: false
+
+  tasks:
+    - name: Remove snap
+      community.general.snap:
+        name: "{{ application_name }}"
+        state: absent
+      become: true
+
+    - name: Removing snap directory
+      file:
+        path: "/home/{{ ansible_ssh_user}}/snap/{{ application_name }}"
+        state: absent
+
+    - name: Remove apt
+      apt:
+        name: "{{ application_name }}"
+        state: absent
+      become: true
+
+    - name: Create installation folder
+      file:
+        path: "{{ installation_folder }}/{{ application_name }}"
+        state: directory
+        mode: 0775
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+      become: true
+
+    - name: Download and unpack firefox tar.bz2
+      ansible.builtin.unarchive:
+        src: "{{ download_url }}"
+        dest: /opt
+        remote_src: yes
+
+    - name: Creating symlink to include application binary in PATH
+      file:
+        src: "{{ installation_folder }}/{{ application_name }}/{{ application_binary_name }}"
+        dest: "{{ local_binary_folder }}/{{ application_name }}"
+        state: link
+        force: yes
+      become: true
+
+    - name: Download .desktop file
+      ansible.builtin.get_url:
+        url: "{{ download_config }}"
+        dest: "{{ applications_folder }}"
+      become: yes
