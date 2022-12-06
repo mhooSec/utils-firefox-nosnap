@@ -6,7 +6,7 @@ Two versions:
 - Bash, for a single local host
 
 Bash:
-./install-firefox.sh
+`./install-firefox.sh`
 
 Ansible:
 1) Specify the relevant hosts and variables in hosts file.
