@@ -22,7 +22,7 @@
 
     - name: Removing snap directory
       file:
-        path: "/home/{{ ansible_ssh_user}}/snap/{{ application_name }}"
+        path: "/home/{{ ansible_ssh_user }}/snap/{{ application_name }}"
         state: absent
 
     - name: Remove apt
